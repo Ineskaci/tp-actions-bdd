@@ -18,7 +18,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Installer les dépendances
+
+      - name: Installer les dépendances et pytest
         working-directory: python-app
         run: |
           pip install -r requirements.txt
@@ -70,7 +71,7 @@ jobs:
   php:
     runs-on: ubuntu-latest
     steps:
-      - name: Récupérer le code
+      - name: Récupérer. le code
         uses: actions/checkout@v4
 
       - name: Préparer la base de données
