@@ -1,3 +1,4 @@
+
 name: CI Multi-Langages
 
 on:
@@ -19,12 +20,13 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install dependencies and test
+      - name: Install dependencies
         working-directory: python-app
-        run: |
-          pip install -r requirements.txt
-          pip install pytest
-          python -m pytest -v
+        run: pip install -r requirements.txt
+
+      - name: Run Python tests
+        working-directory: python-app
+        run: pytest -v
 
   node:
     runs-on: ubuntu-latest
@@ -40,11 +42,13 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install and Test Node
+      - name: Install dependencies
         working-directory: node-app
-        run: |
-          npm install
-          npm test
+        run: npm ci
+
+      - name: Run Node tests
+        working-directory: node-app
+        run: npm test
 
   java:
     runs-on: ubuntu-latest
@@ -58,12 +62,12 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
 
       - name: Build and Test Java
         working-directory: java-app
-        run: mvn -B test
+        run: mvn -B package
 
   php:
     runs-on: ubuntu-latest
@@ -77,11 +81,13 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: "8.3"
           extensions: pdo, pdo_pgsql
 
-      - name: Install Composer and Test PHP
+      - name: Install dependencies
         working-directory: php-app
-        run: |
-          composer install --no-interaction
-          vendor/bin/phpunit tests
+        run: composer install --no-interaction
+
+      - name: Run PHP tests
+        working-directory: php-app
+        run: vendor/bin/phpunit tests
