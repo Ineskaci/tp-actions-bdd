@@ -44,7 +44,7 @@ jobs:
       - name: Installer les dépendances et tester
         working-directory: node-app
         run: |
-          npm ci
+          npm install
           npm test
 
   java:
