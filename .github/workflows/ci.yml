@@ -41,7 +41,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: Installer et Lancer les tests JS (Jest)
+      - name: Installer et Lancer les tests JS
         working-directory: node-app
         run: |
           npm ci
