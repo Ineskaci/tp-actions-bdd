@@ -1,13 +1,13 @@
 {
-  "name": "node-app",
+  "name": "students-app",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Application de gestion des étudiants",
+  "main": "students.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "dependencies": {
-    "pg": "^8.11.3"
+    "pg": "^8.13.1"
   },
   "devDependencies": {
     "jest": "^29.7.0"
