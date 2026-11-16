@@ -8,55 +8,79 @@ jobs:
   python:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: bash db/setup.sh
-      - uses: actions/setup-python@v5
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Database
+        run: bash db/setup.sh
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install & Test Python
+
+      - name: Install dependencies and test
         working-directory: python-app
         run: |
           pip install -r requirements.txt
-          pytest -v
+          pip install pytest
+          python -m pytest -v
 
   node:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: bash db/setup.sh
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Database
+        run: bash db/setup.sh
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install & Test Node.js
+
+      - name: Install and Test Node
         working-directory: node-app
         run: |
-          npm ci
+          npm install
           npm test
 
   java:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: bash db/setup.sh
-      - uses: actions/setup-java@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Database
+        run: bash db/setup.sh
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Build & Test Java
+
+      - name: Build and Test Java
         working-directory: java-app
-        run: mvn -B package
+        run: mvn -B test
 
   php:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: bash db/setup.sh
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Database
+        run: bash db/setup.sh
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
           extensions: pdo, pdo_pgsql
-      - name: Install & Test PHP
+
+      - name: Install Composer and Test PHP
         working-directory: php-app
         run: |
           composer install --no-interaction
