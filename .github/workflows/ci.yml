@@ -1,65 +1,28 @@
-name: CI
+name: CI Python
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
 
 jobs:
   python:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Database
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Préparer la base de données
         run: bash db/setup.sh
-      - uses: actions/setup-python@v5
+
+      - name: Installer Python 3.12
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install dependencies
+
+      - name: Installer les dépendances
         working-directory: python-app
         run: pip install -r requirements.txt
-      - name: Run tests
+
+      - name: Lancer les tests
         working-directory: python-app
-        run: python -m pytest -v
-
-  node:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Database
-        run: bash db/setup.sh
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install dependencies & Test
-        working-directory: node-app
-        run: |
-          npm ci
-          npm test
-
-  java:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Database
-        run: bash db/setup.sh
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Build & Test with Maven
-        working-directory: java-app
-        run: mvn -B package
-
-  php:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Database
-        run: bash db/setup.sh
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: pdo, pdo_pgsql
-      - name: Install dependencies & Test
-        working-directory: php-app
-        run: |
-          composer install --no-interaction
-          vendor/bin/phpunit tests
+        run: pytest -v
