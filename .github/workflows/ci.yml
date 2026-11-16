@@ -25,4 +25,4 @@ jobs:
 
       - name: Lancer les tests
         working-directory: python-app
-        run: pytest -v
+        run: python -m pytest -v
