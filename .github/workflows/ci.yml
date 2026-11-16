@@ -46,7 +46,7 @@ jobs:
       - name: Installer et Lancer les tests JS
         working-directory: node-app
         run: |
-          npm ci
+          npm install
           npm test
 
   java:
@@ -66,12 +66,12 @@ jobs:
 
       - name: Build et Test Java (Maven)
         working-directory: java-app
-        run: mvn -B package
+        run: mvn -B test
 
   php:
     runs-on: ubuntu-latest
     steps:
-      - name: Récupérer. le code
+      - name: Récupérer le code
         uses: actions/checkout@v4
 
       - name: Préparer la base de données
