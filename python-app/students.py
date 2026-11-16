@@ -1,3 +1,4 @@
+from students import moyenne
 def average_grade(conn):
     cursor = conn.cursor()
     cursor.execute("SELECT AVG(grade) FROM students;")
