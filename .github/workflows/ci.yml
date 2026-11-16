@@ -18,14 +18,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
       - name: Installer les dépendances
         working-directory: python-app
         run: pip install -r requirements.txt
 
       - name: Lancer les tests Python
         working-directory: python-app
-        run: pytest -v
+        run: python -m pytest -v
 
   node:
     runs-on: ubuntu-latest
