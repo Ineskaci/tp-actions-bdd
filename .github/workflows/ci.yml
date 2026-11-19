@@ -33,7 +33,7 @@ jobs:
         working-directory: python-app
         run: python -m pytest -v
 
-  node:
+    node:
     runs-on: ubuntu-latest
     steps:
       - name: Récupérer le code
@@ -47,11 +47,13 @@ jobs:
         with:
           node-version: 20
 
-      - name: Installer les dépendances et tester
+      - name: Installer les dépendances
         working-directory: node-app
-        run: |
-          npm ci
-          npm test
+        run: npm ci
+
+      - name: Lancer les tests
+        working-directory: node-app
+        run: npm test
 
   java:
     runs-on: ubuntu-latest
@@ -72,7 +74,7 @@ jobs:
         working-directory: java-app
         run: mvn -B package
 
-  php:
+    php:
     runs-on: ubuntu-latest
     steps:
       - name: Récupérer le code
@@ -87,11 +89,13 @@ jobs:
           php-version: '8.3'
           extensions: pdo, pdo_pgsql
 
-      - name: Installer les dépendances Composer et tester
+      - name: Installer les dépendances
         working-directory: php-app
-        run: |
-          composer install --no-interaction
-          vendor/bin/phpunit tests
+        run: composer install --no-interaction
+
+      - name: Lancer les tests
+        working-directory: php-app
+        run: vendor/bin/phpunit StudentsTest.php
 
   build:
     runs-on: ubuntu-latest
