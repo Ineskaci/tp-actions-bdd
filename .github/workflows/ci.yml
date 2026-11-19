@@ -27,7 +27,7 @@ jobs:
         working-directory: python-app
         run: python -m pytest -v
 
- node:
+  node:
     runs-on: ubuntu-latest
     steps:
       - name: Récupérer le code
