@@ -6,6 +6,9 @@ on:
   pull_request:
 
 jobs:
+  # =========================
+  # JOB PYTHON
+  # =========================
   python:
     runs-on: ubuntu-latest
 
@@ -33,8 +36,12 @@ jobs:
         working-directory: python-app
         run: python -m pytest -v
 
-     node:
-     runs-on: ubuntu-latest
+  # =========================
+  # JOB NODE
+  # =========================
+  node:
+    runs-on: ubuntu-latest
+
     steps:
       - name: Récupérer le code
         uses: actions/checkout@v4
@@ -55,8 +62,12 @@ jobs:
         working-directory: node-app
         run: npm test
 
+  # =========================
+  # JOB JAVA
+  # =========================
   java:
     runs-on: ubuntu-latest
+
     steps:
       - name: Récupérer le code
         uses: actions/checkout@v4
@@ -74,8 +85,12 @@ jobs:
         working-directory: java-app
         run: mvn -B package
 
-    php:
+  # =========================
+  # JOB PHP
+  # =========================
+  php:
     runs-on: ubuntu-latest
+
     steps:
       - name: Récupérer le code
         uses: actions/checkout@v4
@@ -89,25 +104,34 @@ jobs:
           php-version: '8.3'
           extensions: pdo, pdo_pgsql
 
-      - name: Installer les dépendances
+      - name: Installer les dépendances Composer
         working-directory: php-app
         run: composer install --no-interaction
 
-      - name: Lancer les tests
+      - name: Lancer les tests PHPUnit
         working-directory: php-app
         run: vendor/bin/phpunit StudentsTest.php
 
+  # =========================
+  # JOB BUILD
+  # =========================
   build:
     runs-on: ubuntu-latest
+
     needs: [python, node, java, php]
 
     steps:
       - name: Build terminé
         run: echo "Tous les tests ont réussi. Build terminé !"
 
+  # =========================
+  # JOB DEPLOY
+  # =========================
   deploy:
     runs-on: ubuntu-latest
+
     needs: build
+
     if: github.ref == 'refs/heads/main'
 
     steps:
