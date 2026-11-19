@@ -1,4 +1,3 @@
-
 name: CI
 
 on:
@@ -34,26 +33,26 @@ jobs:
         run: python -m pytest -v
 
   node:
-       runs-on: ubuntu-latest
-       steps:
-         - name: Récupérer le code
-           uses: actions/checkout@v4
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
 
-         - name: Préparer la base de données
-           run: bash db/setup.sh
+      - name: Préparer la base de données
+        run: bash db/setup.sh
 
-         - name: Installer Node.js 20
-           uses: actions/setup-node@v4
-           with:
-             node-version: 20
+      - name: Installer Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-         - name: Installer les dépendances
-           working-directory: node-app
-           run: npm ci
+      - name: Installer les dépendances
+        working-directory: node-app
+        run: npm install
 
-         - name: Lancer les tests
-           working-directory: node-app
-           run: npm test
+      - name: Lancer les tests
+        working-directory: node-app
+        run: npm test
 
   java:
     runs-on: ubuntu-latest
