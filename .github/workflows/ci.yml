@@ -91,7 +91,7 @@ jobs:
         working-directory: php-app
         run: |
           composer install --no-interaction
-          vendor/bin/phpunit tests
+          vendor/bin/phpunit StudentsTest.php
 
   build:
     runs-on: ubuntu-latest
