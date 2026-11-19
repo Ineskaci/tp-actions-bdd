@@ -44,7 +44,7 @@ jobs:
       - name: Installer les dépendances et tester
         working-directory: node-app
         run: |
-          npm install
+          npm ci
           npm test
 
   java:
@@ -85,4 +85,4 @@ jobs:
         working-directory: php-app
         run: |
           composer install --no-interaction
-          vendor/bin/phpunit StudentsTest.php
+          vendor/bin/phpunit tests
