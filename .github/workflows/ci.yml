@@ -114,4 +114,9 @@ jobs:
       - name: Vérifier le secret
         env:
           TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-        run: test -n "$TOKEN" && echo "Token présent"
+        run: |
+          if [ -n "$TOKEN" ]; then
+            echo "Token présent"
+          else
+            echo "Attention : Aucun DEPLOY_TOKEN configuré, mais on continue."
+          fi
