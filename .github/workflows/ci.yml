@@ -1,4 +1,5 @@
-name: CI
+
+name: CI Multi-Langages
 
 on:
   push:
@@ -7,36 +8,86 @@ on:
 jobs:
   python:
     runs-on: ubuntu-latest
-    
-    # Déclaration du service PostgreSQL pour ce job
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: tp
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
-      - name: Récupérer le code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Installer Python 3.12
+      - name: Setup Database
+        run: bash db/setup.sh
+
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Installer les dépendances
+      - name: Install dependencies
         working-directory: python-app
         run: pip install -r requirements.txt
 
-      - name: Lancer les tests
+      - name: Run Python tests
         working-directory: python-app
-        run: python -m pytest -v
+        run: pytest -v
+
+  node:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Database
+        run: bash db/setup.sh
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        working-directory: node-app
+        run: npm ci
+
+      - name: Run Node tests
+        working-directory: node-app
+        run: npm test
+
+  java:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Database
+        run: bash db/setup.sh
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Build and Test Java
+        working-directory: java-app
+        run: mvn -B package
+
+  php:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Database
+        run: bash db/setup.sh
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: pdo, pdo_pgsql
+
+      - name: Install dependencies
+        working-directory: php-app
+        run: composer install --no-interaction
+
+      - name: Run PHP tests
+        working-directory: php-app
+        run: vendor/bin/phpunit tests
